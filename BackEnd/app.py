@@ -4,7 +4,7 @@ from models import db
 from score_repo import save_score, get_top_scores
 
 app = Flask(__name__)
-CORS(app)
+CORS(app, resources={r"/api/*": {"origins": "*"}})
 
 # 현재는 SQLite 사용 → 나중에는 환경변수로 DB URI만 변경하면 됨
 app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///scores.db"

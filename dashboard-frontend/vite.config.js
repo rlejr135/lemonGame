@@ -6,7 +6,7 @@ import path from 'path'
 export default defineConfig({
   plugins: [vue()],
   base: '/lemonGame/',   // ★ 리포지토리 이름
-    resolve: {
+  resolve: {
     alias: {
       '@': path.resolve(__dirname, './src')
     }
