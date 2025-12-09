@@ -39,7 +39,7 @@ export default {
 
   methods: {
     async loadRanking() {
-      const res = await axios.get("http://192.168.9.62:5001/api/scores");
+      const res = await axios.get(`${API_BASE}/api/scores`);
       this.rankings = res.data;
     }
   },

@@ -251,7 +251,7 @@ export default {
     /** 점수 제출 **/
     async submitScore() {
       try {
-        await axios.post("http://192.168.9.62:5001/api/submit-score", {
+        await axios.post(`${API_BASE}/api/submit-score`, {
           name: this.playerName,
           score: this.score,
         });
