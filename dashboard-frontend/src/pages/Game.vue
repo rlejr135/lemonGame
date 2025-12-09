@@ -82,6 +82,7 @@
 
 <script>
 import axios from "axios";
+import { API_BASE } from "@/api.js";
 
 export default {
   data() {
