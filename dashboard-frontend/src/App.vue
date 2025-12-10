@@ -4,6 +4,9 @@
 
     <!-- 네비게이션 -->
     <nav class="mb-4">
+      <router-link class="btn btn-primary me-2" to="/home">
+        🏠 홈으로
+      </router-link>
       <router-link class="btn btn-primary me-2" to="/game">
         🎮 게임하기
       </router-link>

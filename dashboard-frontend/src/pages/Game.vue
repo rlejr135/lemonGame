@@ -41,33 +41,41 @@
     </div>
 
     <!-- 게임 보드 -->
-    <div
-      class="board"
-      @mouseup="endDrag"
-      @mouseleave="endDrag"
-    >
-      <div
-        v-for="(row, rIdx) in grid"
-        :key="rIdx"
-        class="board-row"
-      >
+    <div class="d-flex justify-content-center">
         <div
-          v-for="(cell, cIdx) in row"
-          :key="cell.id"
-          class="cell"
-          :class="{
-            'cell-empty': cell.removed,
-            'cell-selected': isSelected(cell),
-            'cell-disabled': gameOver
-          }"
-          @mousedown.left.prevent="startDrag(cell)"
-          @mouseover="continueDrag(cell)"
-        >
-          <span v-if="!cell.removed">{{ cell.value }}</span>
-        </div>
-      </div>
-    </div>
+          class="board"
+          @mousedown="mouseDown"
+          @mousemove="mouseMove"
+          @mouseup="endDrag"
+          @mouseleave="endDrag"
 
+          @touchstart="touchStart"
+          @touchmove="touchMove"
+          @touchend="endDrag"
+        >
+          <div
+            v-for="(row, rIdx) in grid"
+            :key="rIdx"
+            class="board-row"
+          >
+            <div
+              v-for="(cell, cIdx) in row"
+              :key="cell.id"
+              class="cell"
+              :data-id="cell.id"
+              :class="{
+                'cell-empty': cell.removed,
+                'cell-selected': isSelected(cell),
+                'cell-disabled': gameOver
+              }"
+              @mousedown.left.prevent="startDrag(cell)"
+              @mouseover="continueDrag(cell)"
+            >
+              <span v-if="!cell.removed">{{ cell.value }}</span>
+            </div>
+          </div>
+        </div>
+    </div>
     <!-- 설명 -->
     <div class="mt-3">
       <small class="text-muted">
@@ -104,6 +112,7 @@ export default {
     };
   },
 
+
   computed: {
     formattedTime() {
       const m = Math.floor(this.timeLeft / 60);
@@ -113,11 +122,26 @@ export default {
   },
 
   created() {
+    
+  this.detectMobile();
     this.resetGame();
   },
 
   methods: {
 
+    detectMobile() {
+      const isMobile = window.innerWidth < 600;
+
+      if (isMobile) {
+        // 모바일 전용 보드 크기
+        this.rows = 15;
+        this.cols = 10;
+      } else {
+        // PC 전용 보드 크기
+        this.rows = 10;
+        this.cols = 15;
+      }
+    },
     /** 게임 시작/재시작 **/
     restartGame() {
       this.resetGame();
@@ -266,6 +290,46 @@ export default {
     /** 선택 표시 여부 **/
     isSelected(cell) {
       return this.selectedCells.some((c) => c.id === cell.id);
+    },
+
+    mouseDown(event, cell) {
+      this.startDrag(cell);
+    },
+
+    mouseMove(event, cell) {
+      if (!this.isDragging) return;
+      this.continueDrag(cell);
+    },
+
+    // 터치 이벤트
+    touchStart(e) {
+      e.preventDefault();
+
+      const cell = this.getCellFromTouch(e.touches[0]);
+      if (cell) this.startDrag(cell);
+    },
+
+    touchMove(e) {
+      e.preventDefault();
+
+      const cell = this.getCellFromTouch(e.touches[0]);
+      if (cell) this.continueDrag(cell);
+    },
+
+    getCellFromTouch(touch) {
+      const element = document.elementFromPoint(touch.clientX, touch.clientY);
+      if (!element) return null;
+
+      const cellId = element.getAttribute("data-id");
+      if (!cellId) return null;
+
+      const id = parseInt(cellId);
+      for (const row of this.grid) {
+        for (const cell of row) {
+          if (cell.id === id) return cell;
+        }
+      }
+      return null;
     }
   }
 };
@@ -274,10 +338,24 @@ export default {
 
 <style scoped>
 
+  @media (max-width: 600px) {
+    .cell {
+      width: 42px;
+      height: 42px;
+      font-size: 20px;
+    }
+  }
+
+.cell span {
+  pointer-events: none; /* 터치/마우스 선택 안정화 */
+}
+
+
 .board {
   display: inline-block;
   border: 1px solid #ccc;
   user-select: none;
+  touch-action: none; /* 모바일 브라우저 스크롤 방지 */
 }
 
 .board-row {
@@ -308,4 +386,5 @@ export default {
 .cell-disabled {
   cursor: default;
 }
+
 </style>

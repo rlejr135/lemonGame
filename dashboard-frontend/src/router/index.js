@@ -4,7 +4,7 @@ import Ranking from "../pages/Ranking.vue";
 
 const routes = [
   {
-    path: "/",
+    path: "/home",
     redirect: "/App"
   },
   {
