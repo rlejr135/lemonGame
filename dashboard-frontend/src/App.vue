@@ -10,8 +10,12 @@
       <router-link class="btn btn-primary me-2" to="/game">
         🎮 게임하기
       </router-link>
-      <router-link class="btn btn-secondary" to="/ranking">
+      <router-link class="btn btn-secondary me-2" to="/ranking">
         🏆 랭킹
+      </router-link>
+
+      <router-link class="btn btn-secondary" to="/testrcp">
+        rcp comp test
       </router-link>
     </nav>
 

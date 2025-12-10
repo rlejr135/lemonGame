@@ -47,5 +47,17 @@ def get_scores_route():
     return jsonify(out)
 
 
+@app.route("/users", methods=["GET"])
+def getusers():
+
+    out = [
+            "name",
+            "score",
+            "time"
+        ]
+
+    return jsonify(out)
+
+
 if __name__ == "__main__":
     app.run(host="0.0.0.0", port=5001, debug=True)

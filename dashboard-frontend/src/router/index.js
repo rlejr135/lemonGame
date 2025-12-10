@@ -2,6 +2,8 @@ import { createRouter, createWebHistory } from "vue-router";
 import Game from "../pages/Game.vue";
 import Ranking from "../pages/Ranking.vue";
 
+import testrcp from "../pages/testrcp.vue";
+
 const routes = [
   {
     path: "/home",
@@ -16,7 +18,12 @@ const routes = [
     path: "/ranking",
     name: "Ranking",
     component: Ranking
-  }
+  },
+  
+  { 
+    path: "/testrcp",
+    component: testrcp
+  },
 ];
 
 export const router = createRouter({

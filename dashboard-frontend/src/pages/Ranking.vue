@@ -29,7 +29,8 @@
 
 <script>
 import axios from "axios";
-import { API_BASE } from "@/api.js";
+//import { API_BASE } from "@/api.js";
+const API_BASE = import.meta.env.VITE_API_BASE;
 
 export default {
   data() {
@@ -40,6 +41,7 @@ export default {
 
   methods: {
     async loadRanking() {
+      console.log(`${API_BASE}/api/scores`);
       const res = await axios.get(`${API_BASE}/api/scores`);
       this.rankings = res.data;
     }
